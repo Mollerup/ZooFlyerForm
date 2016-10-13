@@ -34,7 +34,7 @@ namespace ZooFlyerForm
                 LoginBtn.PerformClick();
         }
 
-        private void LoginBtn_Click(object sender, EventArgs e)
+        public void LoginBtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(usernameBox.Text))
             {
@@ -54,6 +54,9 @@ namespace ZooFlyerForm
                     {
                         MessageBox.Show("You have succesfully logged in", "Message", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
+                        this.Hide();
+                        Main ss = new Main();
+                        ss.Show();
                     }
                     else
                     {
@@ -66,6 +69,11 @@ namespace ZooFlyerForm
             {
                 MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
