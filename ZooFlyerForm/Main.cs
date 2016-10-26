@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZooFlyerForm.Models;
+using Image = ZooFlyerForm.Models.Image;
 
 namespace ZooFlyerForm
 {
@@ -22,12 +24,11 @@ namespace ZooFlyerForm
         private void uploadPics_Click(object sender, EventArgs e)
         {
             SqlConnection connect = new SqlConnection(Properties.Settings.Default.WebServiceUrl);
-            byte[] imageData;
-            imageData = File.ReadAllBytes(pictureBox.ImageLocation);
+            var imageData = File.ReadAllBytes(pictureBox.ImageLocation);
 
             SqlCommand cmd = new SqlCommand("Insert into Images (Pics) values (@DATA)", connect);
-            cmd.Parameters.Add("@DATA", imageData);
-            MessageBox.Show("Your picture has been uploadet!");
+            cmd.Parameters.AddWithValue("@DATA", imageData);
+            MessageBox.Show("Your picture has been uploaded!");
 
             connect.Open();
             cmd.ExecuteNonQuery();
@@ -38,11 +39,19 @@ namespace ZooFlyerForm
         {
             OpenFileDialog fileChooser = new OpenFileDialog();
             fileChooser.Filter = "image files (*.jpg)|*.jpg|All files (*.*)|*.*";
-            fileChooser.InitialDirectory = "C:\\Brugere\\ålen\\Billeder\\ZooFlyer";
+            fileChooser.InitialDirectory = "C:\\Brugere";
             fileChooser.Title = "Select Image For Upload";
             if (fileChooser.ShowDialog() == DialogResult.OK)
             {
                 pictureBox.ImageLocation = fileChooser.FileName;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (var ms = new MemoryStream(WebserviceHelper.GetImage(3).Pics))
+            {
+                pictureBox.Image = System.Drawing.Image.FromStream(ms);
             }
         }
     }
