@@ -43,32 +43,48 @@ namespace ZooFlyerForm
                 usernameBox.Focus();
                 return;
             }
-            try
+
+            var user = WebserviceHelper.GetUser(0);
+            if (user.Email == usernameBox.Text && user.Password == passwordBox.Text)
             {
-                using (masterEntities mastEnt = new masterEntities())
-                {
-                    var query = from o in mastEnt.Users
-                        where o.Email == usernameBox.Text && o.Password == passwordBox.Text
-                        select o;
-                    if (query.SingleOrDefault() != null)
-                    {
-                        MessageBox.Show("You have succesfully logged in", "Message", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                        this.Hide();
-                        Main ss = new Main();
-                        ss.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Your username or password is incorrect", "Message", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                    }
-                }
+                MessageBox.Show("You have succesfully logged in", "Message", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                Hide();
+                Main ss = new Main();
+                ss.Show();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Your username or password is incorrect", "Message", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
+
+            //try
+            //{
+            //    using (masterEntities mastEnt = new masterEntities())
+            //    {
+            //        var query = from o in mastEnt.Users
+            //            where o.Email == usernameBox.Text && o.Password == passwordBox.Text
+            //            select o;
+            //        if (query.SingleOrDefault() != null)
+            //        {
+            //            MessageBox.Show("You have succesfully logged in", "Message", MessageBoxButtons.OK,
+            //                MessageBoxIcon.Information);
+            //            this.Hide();
+            //            Main ss = new Main();
+            //            ss.Show();
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("Your username or password is incorrect", "Message", MessageBoxButtons.OK,
+            //                MessageBoxIcon.Information);
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
         private void button1_Click(object sender, EventArgs e)
